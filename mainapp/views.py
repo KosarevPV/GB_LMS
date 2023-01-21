@@ -2,6 +2,7 @@ import json
 from datetime import datetime
 
 from django.views.generic import TemplateView
+from django.views.generic.base import RedirectView
 
 
 class MainPageView(TemplateView):
@@ -26,6 +27,10 @@ class NewsPageView(TemplateView):
         # add news at context
         context["data"] = data
         return context
+
+
+class SearchGoogle(RedirectView):
+    url = "https://google.com/search?q=%(words)s"
 
 
 class NewsWithPaginatorView(NewsPageView):
