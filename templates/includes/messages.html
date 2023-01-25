@@ -1,14 +1,14 @@
 <div class="position-absolute w-100" style="z-index: 1;">
-    <div aria-live="polite" aria-atomic="true" class="m-2">
-      <!-- Position it -->
-      <div class="d-flex align-items-end flex-column">
-  
-        {% for message in messages %}
+  <div aria-live="polite" aria-atomic="true" class="m-2">
+    <!-- Position it -->
+    <div class="d-flex align-items-end flex-column">
+
+      {% for message in messages %}
         <!-- Then put toasts within -->
         <div class="toast flex-fill w-100
-      {% if message.level == 30 %}
-      border-warning
-      {% endif %}
+          {% if message.level == 30 %}
+            border-warning
+          {% endif %}
         " role="alert" aria-live="assertive" aria-atomic="true"
           style="right: 0;">
           <div class="toast-header">
@@ -27,15 +27,15 @@
           </div>
         </div>
         {% if message.level > 20 %}
-        <!-- If message will dissapere you will find message in console -->
-        <script>
-          console.log("{{ message }}");
-        </script>
+          <!-- If message will dissapere you will find message in console -->
+          <script>
+            console.log("{{ message }}");
+          </script>
         {% endif %}
-  
-        {% endfor %}
-  
-      </div>
-  
+
+      {% endfor %}
+
     </div>
+
   </div>
+</div>
