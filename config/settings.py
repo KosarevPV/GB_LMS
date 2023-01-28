@@ -115,7 +115,6 @@ AUTHENTICATION_BACKENDS = (
     "social_core.backends.vk.VKOAuth2",
     "social_core.backends.github.GithubOAuth2",
     "authapp.backends.EmailBackend",
-    "django.contrib.auth.backends.ModelBackend",
 )
 
 LOGIN_REDIRECT_URL = "mainapp:main_page"
