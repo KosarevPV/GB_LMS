@@ -3,12 +3,16 @@ from django.utils.translation import gettext_lazy as _
 from rangefilter.filter import DateRangeFilter
 
 from mainapp import models as mainapp_models
+from mainapp.filter import InputFilter
 
 
 @admin.register(mainapp_models.News)
 class NewsAdmin(admin.ModelAdmin):
     search_fields = ["title", "preambule", "body"]
-    list_filter = (("created", DateRangeFilter),)
+    list_filter = (
+        InputFilter,
+        ("created", DateRangeFilter),
+    )
 
 
 @admin.register(mainapp_models.Lesson)

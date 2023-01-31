@@ -1,0 +1,13 @@
+{% load i18n %}
+
+<h3>{% blocktrans with filter_title=title %} By {{ filter_title }} {% endblocktrans %}</h3>
+<ul>
+    <li>
+        {% with choices.0 as all_choice %}
+            <form method="GET">
+                <input type="text" name="{{ spec.parameter_name }}" value="{{ spec.qvalue|default_if_none:"" }}"/>
+                <input class="btn btn-info" type="submit" value="{% trans 'Apply' %}">
+            </form>
+        {% endwith %}
+    </li>
+</ul>
