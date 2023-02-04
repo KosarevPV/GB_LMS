@@ -17,7 +17,7 @@ def send_feedback_mail(message_form: Dict[str, Union[int, str]]) -> None:
         "TechSupport Help",  # subject (title)
         message_form["message"],  # message
         user_obj.email,  # send from
-        ["techsupport@braniac.com"],  # send to
+        ["pavel999kosarev@gmail.com"],  # send to
         fail_silently=False,
     )
     return None
