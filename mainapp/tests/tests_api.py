@@ -145,13 +145,67 @@ class TestLogPage(TestCase):
 
     def test_page_open(self):
         path = reverse("mainapp:log_view")
-        result = self.client.get(path)
+        result = self.client_with_auth.get(path)
         self.assertEqual(result.status_code, HTTPStatus.OK)
 
-    def test_log_download(self):
+    def test_log_download_deny_access(self):
         path = reverse("mainapp:log_download")
         result = self.client.get(path)
         self.assertEqual(result.status_code, HTTPStatus.FOUND)
+
+    def test_log_download_by_admin(self):
+        path = reverse("mainapp:log_download")
+        result = self.client_with_auth.get(path)
+        self.assertEqual(result.status_code, HTTPStatus.OK)
+
+
+class TestProfileEditPage(TestCase):
+    fixtures = ("authapp/fixtures/001_user_admin.json",)
+
+    def setUp(self):
+        super().setUp()
+        self.client_with_auth = Client()
+        self.user_admin = authapp_models.CustomUser.objects.get(username="admin")
+        self.client_with_auth.force_login(self.user_admin, backend="authapp.backends.EmailBackend")
+
+    def test_page_open_by_admin(self):
+        user_admin = authapp_models.CustomUser.objects.get(username="admin")
+        path = reverse("authapp:profile_edit", args=[user_admin.pk])
+        result = self.client_with_auth.get(path)
+        self.assertEqual(result.status_code, HTTPStatus.OK)
+
+    def test_page_open_deny_access(self):
+        user_admin = authapp_models.CustomUser.objects.get(username="admin")
+        path = reverse("authapp:profile_edit", args=[user_admin.pk])
+        result = self.client.get(path)
+        self.assertEqual(result.status_code, HTTPStatus.FOUND)
+
+
+class TestLoginLogoutPage(TestCase):
+    fixtures = ("authapp/fixtures/001_user_admin.json",)
+
+    def setUp(self):
+        super().setUp()
+        self.client_with_auth = Client()
+        self.user_admin = authapp_models.CustomUser.objects.get(username="admin")
+        self.client_with_auth.force_login(self.user_admin, backend="authapp.backends.EmailBackend")
+
+    def test_page_open_login(self):
+        path = reverse("authapp:login")
+        result = self.client.get(path)
+        self.assertEqual(result.status_code, HTTPStatus.OK)
+
+    def test_page_open_logout(self):
+        path = reverse("authapp:logout")
+        result = self.client_with_auth.get(path)
+        self.assertEqual(result.status_code, HTTPStatus.FOUND)
+
+
+class TestRegisterPage(TestCase):
+    def test_page_register(self):
+        path = reverse("authapp:register")
+        result = self.client.get(path)
+        self.assertEqual(result.status_code, HTTPStatus.OK)
 
 
 import pickle
