@@ -96,6 +96,64 @@ class TestNewsPage(TestCase):
         self.assertTrue(news_obj.deleted)
 
 
+class TestCoursesPage(TestCase):
+    fixtures = (
+        "authapp/fixtures/001_user_admin.json",
+        "mainapp/fixtures/002_courses.json",
+    )
+
+    def setUp(self):
+        super().setUp()
+        self.client_with_auth = Client()
+        self.user_admin = authapp_models.CustomUser.objects.get(username="admin")
+        self.client_with_auth.force_login(self.user_admin, backend="authapp.backends.EmailBackend")
+
+    def test_page_open_list(self):
+        path = reverse("mainapp:courses")
+        result = self.client.get(path)
+        self.assertEqual(result.status_code, HTTPStatus.OK)
+
+    def test_page_open_detail(self):
+        course_obj = mainapp_models.Courses.objects.first()
+        path = reverse("mainapp:courses_detail", args=[course_obj.pk])
+        result = self.client.get(path)
+        self.assertEqual(result.status_code, HTTPStatus.OK)
+
+
+class TestContactsPage(TestCase):
+    def test_page_open(self):
+        path = reverse("mainapp:contacts")
+        result = self.client.get(path)
+        self.assertEqual(result.status_code, HTTPStatus.OK)
+
+
+class TestDocPage(TestCase):
+    def test_page_open(self):
+        path = reverse("mainapp:doc_site")
+        result = self.client.get(path)
+        self.assertEqual(result.status_code, HTTPStatus.OK)
+
+
+class TestLogPage(TestCase):
+    fixtures = ("authapp/fixtures/001_user_admin.json",)
+
+    def setUp(self):
+        super().setUp()
+        self.client_with_auth = Client()
+        self.user_admin = authapp_models.CustomUser.objects.get(username="admin")
+        self.client_with_auth.force_login(self.user_admin, backend="authapp.backends.EmailBackend")
+
+    def test_page_open(self):
+        path = reverse("mainapp:log_view")
+        result = self.client.get(path)
+        self.assertEqual(result.status_code, HTTPStatus.OK)
+
+    def test_log_download(self):
+        path = reverse("mainapp:log_download")
+        result = self.client.get(path)
+        self.assertEqual(result.status_code, HTTPStatus.FOUND)
+
+
 import pickle
 from unittest import mock
 
